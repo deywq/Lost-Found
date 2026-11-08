@@ -4,9 +4,12 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 
 const { checkDatabase, pool } = require('./db/pool');
+const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 const categoryRoutes = require('./routes/categories');
+const dashboardRoutes = require('./routes/dashboard');
 const itemRoutes = require('./routes/items');
+const meRoutes = require('./routes/me');
 
 const app = express();
 const port = Number(process.env.PORT) || 5000;
@@ -30,6 +33,9 @@ app.get('/api/health', async (_request, response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/categories', categoryRoutes);
 app.use('/api/items', itemRoutes);
+app.use('/api/me', meRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((request, response) => {
   response.status(404).json({ error: 'Not found', path: request.originalUrl });
