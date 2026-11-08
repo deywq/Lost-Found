@@ -1,0 +1,23 @@
+{
+  "name": "seenit-lost-and-found",
+  "version": "1.0.0",
+  "private": true,
+  "description": "SEENIT — Lost something? Let's spot it.",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n client,server -c blue,green \"npm:dev --workspace client\" \"npm:dev --workspace server\"",
+    "dev:client": "npm run dev --workspace client",
+    "dev:server": "npm run dev --workspace server",
+    "build": "npm run build --workspace client",
+    "start": "npm run start --workspace server"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
