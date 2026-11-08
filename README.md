@@ -1,11 +1,12 @@
 # SEENIT — Lost and Found
 
-SEENIT is a community lost-and-found platform. This repository currently contains the Phase 1 project foundation: a React/Vite client and an Express API, configured to run together from the repository root.
+SEENIT is a community lost-and-found platform. The project is organized as a React/Vite client and an Express API in npm workspaces.
 
 ## Requirements
 
 - Node.js 20 or newer
 - npm (included with Node.js)
+- MySQL 8+ for database-backed API endpoints
 
 ## Install and run
 
@@ -16,7 +17,9 @@ npm install
 npm run dev
 ```
 
-The development client is available at <http://localhost:5173> and the API at <http://localhost:5000>. The client uses Vite's `/api` proxy to reach the Express server.
+The development client is available at <http://localhost:5173> and the API at <http://localhost:5000>. The client uses Vite's `/api` proxy to reach Express.
+
+The API can run without MySQL configuration for frontend development, but database-backed endpoints require a running MySQL server and initialized schema. Follow [the backend setup guide](server/database/README.md) to configure the database.
 
 To run either part by itself:
 
@@ -25,27 +28,30 @@ npm run dev:client
 npm run dev:server
 ```
 
-To create a production client build and start the API:
+Build the frontend and start the API with:
 
 ```bash
 npm run build
 npm start
 ```
 
-Copy `server/.env.example` to `server/.env` to override the API port. No environment file is required for the default development setup.
-
-## Health check
-
-With the server running, open <http://localhost:5000/api/health>. The client also checks this endpoint and shows the connection status.
-
 ## Project structure
 
 ```text
 .
-├── client/       # React + Vite frontend
-├── server/       # Express API
-├── package.json  # npm workspaces and root scripts
+├── client/                 # React + Vite frontend
+├── server/                 # Express API and MySQL schema
+│   ├── database/           # Schema and setup guide
+│   └── src/                # Routes, validation, and database pool
+├── package.json            # npm workspaces and root scripts
 └── README.md
 ```
 
-This setup intentionally stays within Phase 1; product pages, database integration, and feature work are left for their respective phases.
+## Test
+
+```bash
+npm test --workspace server
+npm run build
+```
+
+The backend smoke-test steps and available routes are documented in [server/database/README.md](server/database/README.md).
