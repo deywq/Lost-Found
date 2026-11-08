@@ -1,57 +1,28 @@
 # SEENIT — Lost and Found
 
-SEENIT is a community lost-and-found platform. The project is organized as a React/Vite client and an Express API in npm workspaces.
+SEENIT is a community lost-and-found platform organized as React/Vite client and Express/MySQL API npm workspaces.
 
-## Requirements
+## Requirements and local setup
 
-- Node.js 20 or newer
-- npm (included with Node.js)
-- MySQL 8+ for database-backed API endpoints
-
-## Install and run
-
-From the repository root:
+- Node.js 20+ and npm
+- MySQL 8+ for database features
+- Cloudinary credentials for photo uploads
 
 ```bash
 npm install
+cp server/.env.example server/.env
+# Edit server/.env with database, JWT, and optional Cloudinary credentials.
+mysql -u root -p < server/database/schema.sql
 npm run dev
 ```
 
-The development client is available at <http://localhost:5173> and the API at <http://localhost:5000>. The client uses Vite's `/api` proxy to reach Express.
+Frontend: <http://localhost:5173>. API health: <http://localhost:5000/api/health>.
 
-The API can run without MySQL configuration for frontend development, but database-backed endpoints require a running MySQL server and initialized schema. Follow [the backend setup guide](server/database/README.md) to configure the database.
-
-To run either part by itself:
-
-```bash
-npm run dev:client
-npm run dev:server
-```
-
-Build the frontend and start the API with:
-
-```bash
-npm run build
-npm start
-```
-
-## Project structure
-
-```text
-.
-├── client/                 # React + Vite frontend
-├── server/                 # Express API and MySQL schema
-│   ├── database/           # Schema and setup guide
-│   └── src/                # Routes, validation, and database pool
-├── package.json            # npm workspaces and root scripts
-└── README.md
-```
-
-## Test
+## Tests
 
 ```bash
 npm test --workspace server
 npm run build
 ```
 
-The backend smoke-test steps and available routes are documented in [server/database/README.md](server/database/README.md).
+Backend setup and report-upload details are in [server/database/README.md](server/database/README.md) and [server/database/reports.md](server/database/reports.md).
