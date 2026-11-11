@@ -1,6 +1,6 @@
 # SEENIT backend and MySQL setup
 
-The API uses MySQL 8+ and `mysql2`. The app can start without database credentials so the frontend and health endpoint remain available, but database-backed endpoints require a configured and initialized MySQL database.
+The API uses MySQL 8+ and `mysql2`. You can start the frontend, API, and health endpoint without MySQL; database-backed endpoints return HTTP 503 with a setup message until a database is configured and reachable. To use those features, follow the steps below.
 
 ## 1. Create the database and tables
 
@@ -14,10 +14,9 @@ This creates the `seenit` database, required tables, and starter categories. If 
 
 ## 2. Configure the API
 
-Copy `server/.env.example` to `server/.env`, then set the MySQL connection values:
+Copy `server/.env.example` to `server/.env`, then uncomment and set the MySQL connection values:
 
 ```env
-PORT=5000
 DB_HOST=127.0.0.1
 DB_PORT=3306
 DB_USER=seenit_app
@@ -25,7 +24,7 @@ DB_PASSWORD=replace-with-your-local-password
 DB_NAME=seenit
 ```
 
-Use a database account with only the permissions needed by the app in production. Keep `.env` private and never commit real credentials.
+Use a database account with only the permissions needed by the app in production. Keep `.env` private and never commit real credentials. If you only want to run the website without MySQL, leave the `DB_*` settings unset. If a previous setup already has those values in `server/.env`, remove or comment out at least `DB_HOST` and `DB_NAME`.
 
 ## 3. Install and start
 
@@ -36,7 +35,7 @@ npm install
 npm run dev
 ```
 
-API health: <http://localhost:5000/api/health>. Once configured, it reports `database: connected`; a configured but unreachable database returns HTTP 503. With no database environment configured, the API reports `database: not_configured`.
+API health: <http://localhost:5000/api/health>. With no database environment configured, it reports `database: not_configured`; with a configured database it reports `database: connected`, or HTTP 503 if the configured database cannot be reached.
 
 ## API endpoints
 
@@ -66,7 +65,7 @@ Example create body (use a category ID returned by `/api/categories`):
 }
 ```
 
-`contactMethod` can be included in the create body but is deliberately not returned by the public listing/detail endpoints. Authentication and authorization will be added in Phase 4; until then, this API is a development foundation and must not be exposed as a public production service.
+`contactMethod` can be included in the create body but is deliberately not returned by the public listing/detail endpoints. Authentication and authorization will be added in Phase 4; until then, the current security scope is documented in [reports.md](reports.md).
 
 ## Manual smoke tests
 

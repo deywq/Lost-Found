@@ -5,18 +5,21 @@ SEENIT is a community lost-and-found platform organized as React/Vite client and
 ## Requirements and local setup
 
 - Node.js 20+ and npm
-- MySQL 8+ for database features
-- Cloudinary credentials for photo uploads
+- MySQL 8+ only for database-backed features
+- Cloudinary credentials only for photo uploads
 
 ```bash
 npm install
 cp server/.env.example server/.env
-# Edit server/.env with database, JWT, and optional Cloudinary credentials.
-mysql -u root -p < server/database/schema.sql
+# Set a unique JWT_SECRET in server/.env.
+# To enable database features, uncomment and configure the DB_* settings there,
+# then initialize MySQL using the command in server/database/README.md.
 npm run dev
 ```
 
 Frontend: <http://localhost:5173>. API health: <http://localhost:5000/api/health>.
+
+The site and API can start without MySQL. Without database settings, the health endpoint reports `database: not_configured`; database-backed features return HTTP 503 with setup guidance. If you already have a `server/.env` with `DB_HOST` and `DB_NAME` set but no MySQL server is running, comment out or remove those settings to run without MySQL.
 
 ## Tests
 
